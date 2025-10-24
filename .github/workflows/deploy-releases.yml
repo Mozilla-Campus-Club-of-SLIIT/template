@@ -12,16 +12,21 @@ jobs:
   # Deployments are configured to run automatically.
   deploy:
     runs-on: ubuntu-latest
+
+    outputs:
+      repo_name: ${{ steps.extract.outputs.repo_name }}
+
     steps:
       - name: Extract repo name
-        run: echo "REPO_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
+        id: extract
+        run: echo "repo_name=${GITHUB_REPOSITORY#*/}" >> $GITHUB_OUTPUTS
 
       - name: Display repo name
-        run: echo "$REPO_NAME"
+        run: echo ${{ steps.extract.outputs.repo_name }}
 
       - uses: actions/checkout@v5
         with:
-          repository: "${{ env.SHARED_ACCOUNT }}/$REPO_NAME"
+          repository: "${{ env.SHARED_ACCOUNT }}/${{ steps.extract.outputs.repo_name }}"
           fetch_depth: 0
           token: ${{ secrets.SHARED_ACCOUNT_TOKEN }}
 
