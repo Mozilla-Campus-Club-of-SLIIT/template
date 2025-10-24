@@ -19,21 +19,23 @@ jobs:
     steps:
       - name: Extract repo name
         id: extract
-        run: echo "repo_name=${GITHUB_REPOSITORY#*/}" >> $GITHUB_OUTPUTS
+        run: echo "repo_name=${GITHUB_REPOSITORY#*/}" >> $GITHUB_OUTPUT
 
       - name: Display repo name
-        run: echo ${{ steps.extract.outputs.repo_name }}
+        run: echo ${{ steps.extract.outputs.repo_name }} ${{ vars.SHARED_ACCOUNT_NAME }} ${{ secrets.SHARED_ACCOUNT_TOKEN }}
 
       - uses: actions/checkout@v5
         with:
-          repository: "${{ env.SHARED_ACCOUNT }}/${{ steps.extract.outputs.repo_name }}"
+          repository: "${{ vars.SHARED_ACCOUNT_NAME }}/${{ steps.extract.outputs.repo_name }}"
           fetch_depth: 0
           token: ${{ secrets.SHARED_ACCOUNT_TOKEN }}
 
       - name: Pull latest changes
         run: |
-          git fetch --tags
-          git reset --hard origin/main
+          git remote add upstream https://github.com/Mozilla-Campus-Club-of-SLIIT/${{ steps.extract.outputs.repo_name }}
+          git fetch upstream
+          git checkout main
+          git reset --hard upstream/main
 
       - name: Push changes
         run: git push origin main --force
