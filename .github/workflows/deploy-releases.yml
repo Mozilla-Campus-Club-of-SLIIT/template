@@ -1,0 +1,38 @@
+name: Deploy release
+
+run-name: Deploy ${{ github.repository }}
+
+on:
+  release:
+    types: published
+  workflow_dispatch:
+
+jobs:
+  # Since deployment uses a dedicated account, we only need to pull the repository from that account.
+  # Deployments are configured to run automatically.
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Extract repo name
+        run:
+          echo REPO_NAME=$(${{ github.repository }} | cut -d "/" -f2) >> ${GITHUB_ENV}
+
+      - name: Display repo name
+        run:
+          echo ${{ env.REPO_NAME }}
+
+      - uses: actions/checkout@v5
+        with:
+          repository: "${{ env.SHARED_ACCOUNT }}/${{ env.REPO_NAME }}"
+          fetch_depth: 0
+          token: ${{ secrets.SHARED_ACCOUNT_TOKEN }}
+
+      - name: Pull latest changes
+        run: |
+          git fetch --tags
+          git reset --hard origin/main
+
+      - name: Push changes
+        run: git push origin main --force
+
