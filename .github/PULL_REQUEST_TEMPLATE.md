@@ -1,12 +1,4 @@
----
-name: Pull Request
-about: Suggest an idea or improvement for this project
-title: ''
-labels: ''
-assignees: ''
----
-
-This PR is related to #ISSUE_ID
+This PR is closes #ISSUE_ID
 
 ### Type of Change
 - [ ] Bug fix 🐛
@@ -24,6 +16,7 @@ This PR is related to #ISSUE_ID
   - [ ] `npm run format` (if applicable)
   - [ ] `npm run lint` (if applicable)
   - [ ] `npm test` (if applicable)
+- [ ] I've added closing terms (eg: closes, resolves, fixes #1)
 
 ### Description
 Briefly describe what this PR does.
