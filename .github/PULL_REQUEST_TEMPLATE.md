@@ -1,4 +1,4 @@
-This PR is closes #ISSUE_ID
+This PR closes #ISSUE_ID
 
 ### Type of Change
 - [ ] Bug fix 🐛
