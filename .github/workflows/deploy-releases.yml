@@ -13,18 +13,15 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-
       - name: Extract repo name
-        run:
-          echo REPO_NAME=$(${{ github.repository }} | cut -d "/" -f2) >> ${GITHUB_ENV}
+        run: echo "REPO_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
 
       - name: Display repo name
-        run:
-          echo ${{ env.REPO_NAME }}
+        run: echo "$REPO_NAME"
 
       - uses: actions/checkout@v5
         with:
-          repository: "${{ env.SHARED_ACCOUNT }}/${{ env.REPO_NAME }}"
+          repository: "${{ env.SHARED_ACCOUNT }}/$REPO_NAME"
           fetch_depth: 0
           token: ${{ secrets.SHARED_ACCOUNT_TOKEN }}
 
