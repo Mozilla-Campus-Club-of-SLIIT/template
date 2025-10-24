@@ -1,0 +1,8 @@
+name: Deploy release
+
+run-name: Deploy ${{ github.repository }}
+
+on:
+  release:
+    types: published
+  workflow_dispatch:
