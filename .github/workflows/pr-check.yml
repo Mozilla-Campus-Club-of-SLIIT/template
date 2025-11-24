@@ -21,15 +21,11 @@ jobs:
           app_id: ${{ vars.APP_ID }}
           private_key: ${{ secrets.PRIVATE_KEY }}
 
-      - name: Create comment
-        uses: peter-evans/create-or-update-comment@v5
+      - name: Check PR
+        uses: Mozilla-Campus-Club-of-SLIIT/pr-check-action@main
         with:
-          issue-number: 1
           token: ${{ steps.app-token.outputs.bot_token }}
-          body: |
-            This is a multi-line test comment
-            - With GitHub **Markdown** :sparkles:
-            - Created by [create-or-update-comment][1]
-
-            [1]: https://github.com/peter-evans/create-or-update-comment
-          reactions: '+1'
+          comment-author: ${{ steps.app-token.outputs.bot_name}}[bot]
+          check-closing-statement: true
+          check-unchecked-boxes: true
+          require-nondefault-branch: true
